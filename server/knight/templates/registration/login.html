@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+</head>
+    <title>Signin Template for Bootstrap</title>
+
+    {% load static from staticfiles %}
+    <!-- Custom styles for this template -->
+    <link href="{% static "bs/css/signin.css" %}" rel="stylesheet">
+    <style>body { padding-top:100px; }</style>
+
+  </head>
+
+  <body>
+
+
+
+    <div class="container">
+<form method="post" action="{% url 'login_next' %}" class="form-signin">
+{% if form.errors %}
+<div class="alert alert-danger" role="alert">Your username and password didn't match. Please try again.</div>
+{% endif %}
+
+{% if next %}
+    {% if user.is_authenticated %}
+    <div class="alert alert-info" role="alert">Your account doesn't have access to this page. To proceed,
+	    please login with an account that has access.</div>
+    {% else %}
+    <div class="alert alert-warning" role="alert">Please login to see this page.</div>
+    {% endif %}
+{% endif %}
+
+<h2 class="form-signin-heading">Sign in</h2>
+{% csrf_token %}
+        <label for="Username" class="sr-only">{{ form.username.label_tag }}</label>
+        <input type="text" id="username" name="username" class="form-control" placeholder="Username" required autofocus>
+        <label for="Password" class="sr-only">{{ form.password.label_tag }}</label>
+	<input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+
+<button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+<input type="hidden" name="next" value="{{ next }}" />
+<p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+</form>
+</div>
+
+{# Assumes you setup the password_reset view in your URLconf #}
+
+
+  </body>
+{% endblock content %}
